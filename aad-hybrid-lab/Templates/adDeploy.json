@@ -51,6 +51,11 @@
       "type": "string",
       "defaultValue": "Standard_D1_v2",
       "metadata": { "description": "This is the allowed list of VM sizes" }
+    },
+    "osDiskSizeGB": {
+      "type": "int",
+      "defaultValue": 100,
+      "metadata": { "description": "Size of the OS disk in GB"}
     }
   },
   "variables": {
@@ -131,8 +136,13 @@
             "version": "latest"
           },
           "osDisk": {
+            "name": "[concat(variables('vmName'), '_OSDisk')]",
             "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Premium_LRS"
+            },
+            "diskSizeGB": "[parameters('osDiskSizeGB')]"
           }
         },
         "networkProfile": {
